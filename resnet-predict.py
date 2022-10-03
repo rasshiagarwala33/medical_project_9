@@ -25,3 +25,21 @@ test_ds = transform(image)
 
 model = to_device(Resnet34(), device)
 predict_image(test_ds,model,test_ds)
+test_tf= tt.Compose([   
+    tt.Resize(size=(150,150)),
+    tt.ToTensor(),
+])
+
+# test_dir = (data_dir + '/test')
+# test_ds = ImageFolder(test_dir,test_tf)
+
+# test_dl = DataLoader(
+#     test_ds,
+#     batch_size=batch_size,
+#     num_workers=3,
+#     shuffle=False,
+#     pin_memory=True
+# )
+# test_dl = DeviceDataLoader(test_dl, device)  
+# history = [evaluate(model, test_dl)]
+# print(history)

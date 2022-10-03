@@ -117,6 +117,7 @@ class ImageClassificationBase(nn.Module):
         out = self(images)                    # Generate predictions
         loss = F.cross_entropy(out, labels)   # Calculate loss
         acc = accuracy(out, labels)           # Calculate accuracy
+        print(acc)
         return {'val_loss': loss.detach(), 'val_acc': acc}
         
     def validation_epoch_end(self, outputs):
@@ -175,7 +176,8 @@ class Resnet34(ImageClassificationBase):
         self.network = models.resnet34(pretrained=True)
         # Replace last layer
         num_ftrs = self.network.fc.in_features
-        self.network.fc = nn.Linear(num_ftrs, 6)
+        self.network.fc = nn.Linear(num_ftrs, 23)
+        
     
     def forward(self, xb):
         return torch.sigmoid(self.network(xb))
