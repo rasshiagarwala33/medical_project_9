@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta charset="utf-8">
+
+<!-- disable iPhone scale -->
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<title>Skin diseas detection</title>
+<meta name="description" content="Take a photo of your skin lesion on a smartphone, and this will search the world’s largest dermatology textbook and show you the most relevant information.">
+<!-- main css -->
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<style>
+	/************************************************************************************
+STRUCTURE
+******************************************************/
+:root {
+    --primary: #069370;
+  
+    --secondary: #046950;
+    --primary-light: #069370c4;
+    --primary-dark: #1a5e4d;
+    --pure: #ffffff;
+    --smoke: whitesmoke;
+    --dark-gray: #999;
+    --btn-primary: #421c52;
+    --btn-secondary: #723c78;
+    --btn: linear-gradient(45deg, #704872, #3d1a64);
+  
+    --red: hsl(0, 78%, 62%);
+    --cyan: hsl(180, 62%, 55%);
+    --orange: hsl(34, 97%, 64%);
+    --blue: hsl(212, 86%, 64%);
+    --varyDarkBlue: hsl(234, 12%, 34%);
+    --grayishBlue: hsl(229, 6%, 66%);
+    --veryLightGray: hsl(0, 0%, 98%);
+    --weight1: 200;
+    --weight2: 400;
+    --weight3: 600;
+  }
+  /************************************************************************************
+  HEADER
+  *************************************************************************************/
+  @import url("https://fonts.googleapis.com/css?family=Noto+Serif+SC&display=swap");
+  /* @import url(responsive.css); */
+  
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: "Noto+Serif+SC", sans-serif;
+  
+    box-sizing: border-box;
+  }
+  
+  header {
+    position: relative;
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 10px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+  .logo {
+    float: left;
+    text-align: center;
+    line-height: 60px;
+    font-size: 30px;
+    padding: 0 20px;
+    color: #069370;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  nav {
+    float: right;
+  }
+  .clear {
+    clear: both;
+  }
+  nav ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+  }
+  nav ul li {
+    list-style: none;
+  }
+  nav ul li a {
+    display: block;
+    margin: 10px 0;
+    padding: 10px 20px;
+    text-decoration: none;
+    /* border-bottom: #069370; */
+    color: #262626;
+  }
+  
+  nav ul li a.active,
+  nav ul li a:hover {
+    color: #069370;
+  
+    transition: 0.2s;
+  }
+  @media (max-width: 1200px) {
+    header {
+      margin: 20px;
+    }
+  }
+  @media (max-width: 768px) {
+    .mean-toggle {
+      display: block;
+      width: auto;
+      height: auto;
+      margin: 10px;
+      float: right;
+      cursor: pointer;
+      text-align: center;
+      font-size: 30px;
+      color: #069370;
+    }
+    .mean-toggle:before {
+      content: "\f0c9";
+      font-family: fontAwesome;
+      line-height: 40px;
+    }
+    .mean-toggle.active:before {
+      content: "\f00d";
+    }
+    nav {
+      display: none;
+    }
+    nav.active {
+      display: block;
+      width: 100%;
+    }
+    nav.active ul {
+      display: block;
+    }
+    nav.active ul li {
+      margin: 0;
+      text-align: center;
+    }
+  }
+  
+  .started {
+    background-color: #069370;
+    border-radius: 40px;
+    color: cornsilk;
+  }
+  .started:hover {
+    background-color: #025c45;
+    border-radius: 30px;
+    color: rgba(255, 255, 255, 0.877);
+    /* transition: 0.3s ease-in-out; */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+  }
+  
+  #home {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 220px;
+    height: 555px;
+    background-image: url(../static/images/bg.png);
+  
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  
+  #home::before {
+    font-family: "Noto Sans JP", sans-serif;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 610px;
+    width: 100%;
+    z-index: -1;
+    opacity: 0.8;
+  }
+  
+  #home h1 {
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+  }
+  #home a {
+    text-decoration: none;
+    background: var(--primary);
+    position: relative;
+    display: inline-block;
+    padding: 8px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    margin-top: 20px;
+    box-shadow: 0 10px 20px rgb(0 0 0 / 20%);
+    transition: 0.5s;
+  }
+  
+  /* ------------------------------------------------------------------------ */
+  
+  .boxheading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4rem;
+    font-weight: var(--weight3);
+    color: var(--primary);
+  }
+  
+  #box2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    min-height: 95vh;
+    background: var(--dark);
+  }
+  
+  body .container_card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 40px 0;
+  }
+  
+  body .container_card .card {
+    position: relative;
+    min-width: 320px;
+    height: 440px;
+    box-shadow: inset 5px 5px 5px rgba(0, 0, 0, 0.2),
+      inset -5px -5px 15px rgba(255, 255, 255, 0.1),
+      5px 5px 15px rgba(0, 0, 0, 0.3), -5px -5px 15px rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    margin: 30px;
+    transition: 0.5s;
+  }
+  
+  body .container_card .card:nth-child(1) .box .content a {
+    background: var(--primary-light);
+  }
+  
+  body .container_card .card:nth-child(2) .box .content a {
+    background: var(--primary);
+  }
+  
+  body .container_card .card:nth-child(3) .box .content a {
+    background: var(--primary-dark);
+  }
+  
+  body .container_card .card .box {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
+    background: var(--pure);
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    transition: 0.5s;
+  }
+  
+  body .container_card .card .box:hover {
+    transform: translateY(-50px);
+  }
+  
+  body .container_card .card .box:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  
+  body .container_card .card .box .content {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  body .container_card .card .box .content h2 {
+    position: absolute;
+    top: -10px;
+    right: 30px;
+    font-size: 8rem;
+    color: rgba(255, 255, 255, 0.1);
+  }
+  
+  body .container_card .card .box .content h3 {
+    font-size: 1.8rem;
+    color: black;
+    z-index: 1;
+    transition: 0.5s;
+    margin-bottom: 15px;
+  }
+  
+  body .container_card .card .box .content p {
+    font-size: 1rem;
+    font-weight: 300;
+    color: var(--primary-dark);
+    z-index: 1;
+    transition: 0.5s;
+  }
+  
+  body .container_card .card .box .content a {
+    position: relative;
+    display: inline-block;
+    padding: 8px 20px;
+    background: black;
+    border-radius: 5px;
+    text-decoration: none;
+    color: white;
+    margin-top: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: 0.5s;
+  }
+  body .container_card .card .box .content a:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.6);
+    background: var(--secondary);
+    color: var(--pure);
+  }
+  
+  /* --------------------- */
+  
+  .attribution {
+    font-size: 11px;
+    text-align: center;
+  }
+  .attribution a {
+    color: var(--primary-dark);
+  }
+  
+  .header__container3 h1 {
+    font-weight: var(--weight3);
+    color: var(--primary);
+  }
+  
+  @media (max-width: 400px) {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+  
+  .header__container3 {
+    text-align: center;
+    line-height: 0.8;
+    margin-bottom: 50px;
+    margin-top: 100px;
+  }
+  
+  .box__container3 p {
+    color: var(--primary);
+  }
+  
+  .box__container3 {
+    border-radius: 5px;
+    box-shadow: 0px 30px 40px -20px var(--primary);
+    padding: 30px;
+    margin: 20px;
+  }
+  
+  .box__container3 img {
+    float: right;
+  }
+  
+  @media (max-width: 450px) {
+    .box__container3 {
+      height: 200px;
+    }
+  }
+  
+  @media (max-width: 950px) and (min-width: 450px) {
+    .box__container3 {
+      text-align: center;
+      height: 180px;
+    }
+  }
+  
+  .box__container3 .cyan {
+    border-top: 3px solid var(--cyan);
+  }
+  .box__container3 .red {
+    border-top: 3px solid var(--red);
+  }
+  .box__container3 .blue {
+    border-top: 3px solid var(--blue);
+  }
+  .box__container3 .orange {
+    border-top: 3px solid var(--orange);
+  }
+  
+  .box__container3 h2 {
+    color: var(--primary-dark);
+    font-weight: var(--weight3);
+  }
+  
+  @media (min-width: 950px) {
+    .row1-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    .row2-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .box-down {
+      position: relative;
+      top: 150px;
+    }
+    .box__container3 {
+      width: 20%;
+    }
+    .header__container3 p {
+      width: 30%;
+    }
+  }
+  
+  /* ----------------------------------------------------------- */
+  footer {
+    height: 50vh;
+  }
+  .container_footer {
+    max-width: 1170px;
+    margin: auto;
+  }
+  .row_footer {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  ul {
+    list-style: none;
+  }
+  .footer {
+    background-color: var(--dark);
+    padding: 70px 0;
+  }
+  .footer-col {
+    width: 25%;
+    padding: 0 15px;
+  }
+  .footer-col h4 {
+    font-size: 18px;
+    color: var(--primary);
+    text-transform: capitalize;
+    margin-bottom: 35px;
+    font-weight: 500;
+    position: relative;
+  }
+  .footer-col h4::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -10px;
+    background-color: #e9dc1e;
+    height: 2px;
+    box-sizing: border-box;
+    width: 50px;
+  }
+  .footer-col ul li:not(:last-child) {
+    margin-bottom: 10px;
+  }
+  .footer-col ul li a {
+    font-size: 16px;
+    text-transform: capitalize;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 300;
+    color: var(--primary);
+    display: block;
+    transition: all 0.3s ease;
+  }
+  .footer-col ul li a:hover {
+    color: #e9dc1e;
+    padding-left: 8px;
+  }
+  .footer-col .social-links a {
+    display: inline-block;
+    height: 40px;
+    width: 40px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin: 0 10px 10px 0;
+    text-align: center;
+    line-height: 40px;
+    border-radius: 50%;
+    color: #ffffff;
+    transition: all 0.5s ease;
+  }
+  .footer-col .social-links a:hover {
+    color: #24262b;
+    background-color: #ffffff;
+  }
+  
+  /*responsive*/
+  @media (max-width: 767px) {
+    .footer-col {
+      width: 50%;
+      margin-bottom: 30px;
+    }
+  }
+  @media (max-width: 574px) {
+    .footer-col {
+      width: 100%;
+    }
+  }
+  
+  /* ---------------------------- */
+  
+</style>
+<!-- media queries css -->
+<link href="css/media-queries.css" rel="stylesheet" type="text/css">
+<!-- html5.js for IE less than 9 -->
+<!--[if lt IE 9]>
+	<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<!-- css3-mediaqueries.js for IE less than 9 -->
+<!--[if lt IE 9]>
+	<script src="//css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
+<![endif]-->
+<!-- lets you use only unprefixed CSS properties  -->
+<script  src="prefixfree/1-0-7/prefixfree.dynamic-dom.min.js"></script>
+<!-- jQuery -->
+<script src="ajax/libs/jquery/1-10-2/jquery.min.js"></script>
+<script src="ajax/libs/jqueryui/1-8/jquery-ui.min.js"></script>
+<script src="js/jsapi.js"></script>
+<script  src="js/main.js"></script>
+<!-- Google Analytics tracking code -->
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-48354920-1', 'lubax.com');
+  ga('send', 'pageview');
+</script>
+</head>
+<body class="body">
+    <div>
+      <header>
+        <a href="#" class="logo"> Take a Pill 💊 </a>
+        <div class="mean-toggle"></div>
+        <nav>
+          <ul>
+            <li>
+              <a href="#">Home</a>
+            </li>
+            <li>
+              <a href="#box2">Why ?</a>
+            </li>
+            <li>
+              <a href="#container3">Services</a>
+            </li>
+            <li>
+              <a className="started" href="upload.html"> Start here </a>
+            </li>
+          </ul>
+        </nav>
+        <div class="clear"></div>
+      </header>
+
+      <section id="home">
+        <h1 class="h-primary">👨‍⚕️Check yourself first !!</h1>
+
+        <div class="sq-title"><a href="upload.html">Identify your diesease</a></div>
+      </section>
+      <!-- /#content -->
+
+      <section>
+        <div class="boxheading" data-aos="fade-in">
+          <h2>Why ? 😊</h2>
+        </div>
+        <div id="box2">
+          <div class="container_card">
+            <div class="card" data-aos="fade-right">
+              <div class="box">
+                <div class="content">
+                  <h2>01</h2>
+                  <h3>Reason 1 ♋</h3>
+                  <p>
+                    Early diagnosis of cancer focuses on detecting symptomatic
+                    patients as early as possible so they have the best chance
+                    for successful treatment. When cancer care is delayed or
+                    inaccessible there is a lower chance of survival, greater
+                    problems associated with treatment and higher costs of care.
+                  </p>
+                  <!-- <a href="#">Read More</a> -->
+                </div>
+              </div>
+            </div>
+
+            <div class="card" data-aos="flip-up">
+              <div class="box">
+                <div class="content">
+                  <h2>02</h2>
+                  <h3>Reason 2 🤚🏻</h3>
+                  <p>
+                    Skin diseases are more common than other diseases. Skin
+                    diseases may be caused by fungal infection, bacteria,
+                    allergy, or viruses, etc. They have a serious impact on
+                    people’s life and health
+                  </p>
+                  <!-- <a href="#">Read More</a> -->
+                </div>
+              </div>
+            </div>
+
+            <div class="card" data-aos="fade-left">
+              <div class="box">
+                <div class="content">
+                  <h2>03</h2>
+                  <h3>Reason 3 🤖</h3>
+                  <p>
+                    Artificial intelligence (AI) has wide applications in
+                    healthcare, including dermatology. Machine learning (ML) is
+                    a subfield of AI involving statistical models and algorithms
+                    that can progressively learn from data to predict the
+                    characteristics of new samples and perform a desired task.
+                  </p>
+                  <!-- <a href="#">Read More</a> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div id="container3">
+        <div class="header__container3" data-aos="zoom-in">
+          <h1>Things we provide</h1>
+        </div>
+        <div class="row1-container">
+          <div class="box__container3 box-down cyan" data-aos="fade-right">
+            <h2>&nbsp &nbsp &nbsp &nbsp Database &nbsp &nbsp &nbsp &nbsp 📈</h2>
+            <p>
+              Our reference image library is an ever-growing database of
+              diagnosed images edited by dermatologists
+            </p>
+            <img src="icon-supervisor.svg" alt="" />
+          </div>
+
+          <div class="box__container3 red" data-aos="fade-down">
+            <h2>
+              &nbsp &nbsp &nbsp &nbsp &nbsp Our Aim &nbsp &nbsp &nbsp &nbsp
+              &nbsp 🎯
+            </h2>
+
+            <p>
+              Our aim is to provide a simple, inexpensive software system to
+              identify potentially all types of skin lesions using a
+              web-app-based platform
+            </p>
+            <img src="icon-team-builder.svg" alt="" />
+          </div>
+
+          <div class="box__container3 box-down blue" data-aos="fade-left">
+            <h2>
+              &nbsp &nbsp &nbsp &nbsp &nbsp Algorithm &nbsp &nbsp &nbsp 🎛️
+            </h2>
+            <p>
+              The algorithm works a bit like Google's image search, only ours is
+              specifically designed for skin images
+            </p>
+            <img src="icon-calculator.svg" alt="" />
+          </div>
+        </div>
+        <div class="row2-container">
+          <div class="box__container3" data-aos="fade-up">
+            <h2>
+              &nbsp &nbsp &nbsp &nbsp &nbsp Working &nbsp &nbsp &nbsp &nbsp🔍
+            </h2>
+            <p>
+              Our application is using sophisticated CBIR (content based image
+              recognition) technology to discriminate skin-lesion types
+            </p>
+            <img src="icon-karma.svg" alt="" />
+          </div>
+        </div>
+      </div>
+      <footer class="footer" data-aos="fade-up">
+        <div class="container_footer">
+          <div class="row_footer">
+            <div class="footer-col">
+              <h4>Take a pill</h4>
+              <ul>
+                <li><a href="#box2">Why us</a></li>
+                <li><a href="#container3">our services</a></li>
+                <li><a href="#">privacy policy</a></li>
+                <li><a href="#">affiliate program</a></li>
+              </ul>
+            </div>
+            <div class="footer-col">
+              <h4>get help</h4>
+              <ul>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Roles</a></li>
+              </ul>
+            </div>
+  
+            <div class="footer-col">
+              <h4>follow us</h4>
+              <div class="social-links">
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </footer>
+
+      <!-- /#footer -->
+    </div>
+    <!-- /#pagewrap -->
+  </body>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      offset: 300,
+      duration: 1000,
+    });
+  </script>
+</html>
