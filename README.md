@@ -38,4 +38,4 @@ HTML,CSS,Javascript, Jquery,Python
 #How to run :---
 1) Clone this repository
 2) Then run pip install -r requirements.txt
-3) After that run pythoon app.py
+3) After that run python app.py
